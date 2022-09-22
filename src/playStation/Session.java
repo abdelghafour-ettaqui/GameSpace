@@ -5,25 +5,36 @@ import java.util.*;
 import java.io.*;
 
 public class Session {
+
     Scanner scanner = new Scanner(System.in);
-    int choice,typeChoice;
+    int choice,typeChoice,postNum;
     String firstname,lastname,duration,gameName="",startingTime;
-    int postNum;
-   // String[] console={ "PS5-SAMSUNG", "XBOX-DELL", "XBOX-SAMSUNG", "XBOX-ASUS", "XBOX-HP","PS5-ASUS","PS5-DELL","NINTENDO SWITCH-DELL","NINTENDO SWITCH-ASUS"};
+    //HashMap<String, ArrayList<Integer>> console;
+    //HashMap<String, ArrayList<Integer>> screen;
+
+    public Session() {
+        // = new HashMap<>();
+        // screen = new HashMap<>();
+
+
+
+
+    }
+
+
+
+    // String[] post={ "PS5-SAMSUNG", "XBOX-DELL", "XBOX-SAMSUNG", "XBOX-ASUS", "XBOX-HP","PS5-ASUS","PS5-DELL","NINTENDO SWITCH-DELL","NINTENDO SWITCH-ASUS"};
 
 
 
     public void displayMainMenu() {
 
         System.out.println("------------------------------------");
-            System.out.println(" 1 - Add a client");
-            System.out.println(" 2 - Add a console");
-            System.out.println(" 2 - Add a screen");
-            System.out.println(" 2-  Create a post");
+            System.out.println(" 2 - Add a client");
             System.out.println(" 2 - Display the gain the day");
             System.out.println(" 3 - Display the gain the month");
         System.out.println("------------------------------------");
-        System.out.print("     enter your choice     ");
+        System.out.print("enter your choice");
         try {
             choice = scanner.nextInt();
             serviceChoice(choice);
@@ -136,13 +147,16 @@ public class Session {
                     break;
 
             case 2:
-                   //Gain.displayDay();
+                   //addConsole();
                     break;
+
 
             case 3:
-                   // Gain.displayMonth();
-                    break;
-
+                // addScreen()();
+                break;
+            case 4:
+                // addScreen()();
+                break;
             default:
                 System.out.println("invalid choice");
         }
