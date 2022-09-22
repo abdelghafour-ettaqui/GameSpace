@@ -11,14 +11,24 @@ public class Session {
     String firstname,lastname,duration,gameName="",startingTime;
     //HashMap<String, ArrayList<Integer>> console;
     //HashMap<String, ArrayList<Integer>> screen;
+    Console ps5,xbox,ms;
+    Screen samsung,dell,hp,asus;
+    Console[] consoles;
+    Screen[] screens;
 
     public Session() {
         // = new HashMap<>();
         // screen = new HashMap<>();
+         ps5 = new Console("ps5",3);
+         xbox = new Console("xbox",4);
+         ms = new Console("NINTENDO SWITCH",2);
+         samsung = new Screen("samsung",2);
+         dell = new Screen("dell",3);
+         hp = new Screen ("hp",1);
+         asus = new Screen ("asus",3);
 
-
-
-
+         screens = new Screen[]{samsung,dell,hp,asus};
+         consoles = new Console[]{ps5,xbox,ms};
     }
 
 
@@ -29,10 +39,12 @@ public class Session {
 
     public void displayMainMenu() {
 
+
         System.out.println("------------------------------------");
-            System.out.println(" 2 - Add a client");
-            System.out.println(" 2 - Display the gain the day");
-            System.out.println(" 3 - Display the gain the month");
+            System.out.println(" 1 - Add a client");
+            System.out.println(" 2 - Dispaly consoles and screens");
+            System.out.println(" 3 - Display the gain the day");
+            System.out.println(" 4 - Display the gain the month");
         System.out.println("------------------------------------");
         System.out.print("enter your choice");
         try {
@@ -71,25 +83,36 @@ public class Session {
 
     public void clientInfo(){
         System.out.println("------------------------------------");
+
         System.out.print(" Client firstname : ");
         firstname=scanner.next();
+
         System.out.print(" Client lastname : ");
         lastname=scanner.next();
-        System.out.println("------------------- post ----------------");
-        int index=1;
 
-        /*  for( String value : console ) {
-            System.out.println(index++ +"- "+ value );
-
-        }*/
-        choice=scanner.nextInt();
-        consoleChoice(choice);
-        System.out.print(" N° of the empty post : ");
-        postNum=scanner.nextInt();
         System.out.print(" Starting time : ");
         startingTime=scanner.next();
+
         System.out.print(" Duration : ");
         duration=scanner.next();
+
+        System.out.println("----------Consoles---------------");
+        int indexConsoles=1;
+        for( Console value : consoles ) {
+            System.out.println(indexConsoles++ +"- "+ value );
+        }
+        System.out.print("enter the number of the chosen console: ");
+        choice=scanner.nextInt();
+        consoleChoice(choice);
+        System.out.println("-------------Screens-----------------");
+        int indexScreens=1;
+        for( Screen value:screens){
+            System.out.println(indexScreens++ +"- "+ value);
+        }
+        System.out.println("enter the number of the chosen screen: ");
+        choice=scanner.nextInt();
+        screenChoice(choice);
+
         System.out.println("------------------- type of the game ----------------");
         System.out.println(" 1 - sport");
         System.out.println(" 2 - war");
@@ -147,7 +170,7 @@ public class Session {
                     break;
 
             case 2:
-                   //addConsole();
+                   displayDevices();
                     break;
 
 
@@ -164,7 +187,23 @@ public class Session {
     }
     public void consoleChoice(int choice){
 
+    }
 
+    public void screenChoice(int choice){
+
+    }
+
+    public void displayDevices(){
+        int indexConsoles=1;
+        int indexScreens=1;
+        System.out.println("----------Consoles---------------");
+        for( Console value : consoles ) {
+            System.out.println(indexConsoles++ +"- "+ value );
+        }
+        System.out.println("-----------Screens---------------");
+        for( Screen value:screens){
+            System.out.println(indexScreens++ +"- "+ value);
+        }
 
     }
 
