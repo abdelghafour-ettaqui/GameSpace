@@ -11,24 +11,30 @@ public class Session {
     String firstname,lastname,duration,gameName="",startingTime;
     //HashMap<String, ArrayList<Integer>> console;
     //HashMap<String, ArrayList<Integer>> screen;
-    Console ps5,xbox,ms;
-    Screen samsung,dell,hp,asus;
-    Console[] consoles;
-    Screen[] screens;
+
+    Client client ;
+    Post post;
+
+
+    ArrayList <Client> clients = new ArrayList <Client>();
+    ArrayList <Post> posts = new ArrayList <Post>();
 
     public Session() {
         // = new HashMap<>();
         // screen = new HashMap<>();
-         ps5 = new Console("ps5",3);
-         xbox = new Console("xbox",4);
-         ms = new Console("NINTENDO SWITCH",2);
-         samsung = new Screen("samsung",2);
-         dell = new Screen("dell",3);
-         hp = new Screen ("hp",1);
-         asus = new Screen ("asus",3);
+        posts.add(new Post("SAMSUNG","PS5",1));
+        posts.add(new Post ("DELL","XBOX",2));
+        posts.add(new Post ("SAMSUNG","XBOX",3));
+        posts.add(new Post ("ASUS","XBOX",4));
+        posts.add(new Post ("HP","XBOX",5));
+        posts.add(new Post ("ASUS","PS5",6));
+        posts.add(new Post ("DELL","NINTENDO SWITCH",7));
+        posts.add(new Post ("ASUS","NINTENDO SWITCH",8));
+        posts.add(new Post ("DELL","PS5",9));
 
-         screens = new Screen[]{samsung,dell,hp,asus};
-         consoles = new Console[]{ps5,xbox,ms};
+
+
+
     }
 
 
@@ -42,7 +48,7 @@ public class Session {
 
         System.out.println("------------------------------------");
             System.out.println(" 1 - Add a client");
-            System.out.println(" 2 - Dispaly consoles and screens");
+            System.out.println(" 2 - Display consoles and screens");
             System.out.println(" 3 - Display the gain the day");
             System.out.println(" 4 - Display the gain the month");
         System.out.println("------------------------------------");
@@ -59,9 +65,7 @@ public class Session {
         try {
 
             clientInfo();
-            Client client ;
 
-            ArrayList <Client> clients = new ArrayList<Client>();
 
             if(clients.size()<17){
 
@@ -98,17 +102,13 @@ public class Session {
 
         System.out.println("----------Consoles---------------");
         int indexConsoles=1;
-        for( Console value : consoles ) {
-            System.out.println(indexConsoles++ +"- "+ value );
-        }
+
         System.out.print("enter the number of the chosen console: ");
         choice=scanner.nextInt();
         consoleChoice(choice);
         System.out.println("-------------Screens-----------------");
         int indexScreens=1;
-        for( Screen value:screens){
-            System.out.println(indexScreens++ +"- "+ value);
-        }
+
         System.out.println("enter the number of the chosen screen: ");
         choice=scanner.nextInt();
         screenChoice(choice);
@@ -196,14 +196,7 @@ public class Session {
     public void displayDevices(){
         int indexConsoles=1;
         int indexScreens=1;
-        System.out.println("----------Consoles---------------");
-        for( Console value : consoles ) {
-            System.out.println(indexConsoles++ +"- "+ value );
-        }
-        System.out.println("-----------Screens---------------");
-        for( Screen value:screens){
-            System.out.println(indexScreens++ +"- "+ value);
-        }
+
 
     }
 
