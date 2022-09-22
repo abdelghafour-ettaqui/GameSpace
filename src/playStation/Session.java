@@ -3,18 +3,19 @@ package playStation;
 import java.util.*;
 
 import java.io.*;
-//import org.json.simple.JSONArray;
-//import org.json.simple.JSONObject;
-//import org.json.simple.parser.JSONParser;
-//import org.json.simple.parser.ParseException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 public class Session {
 
     Scanner scanner = new Scanner(System.in);
     int choice,typeChoice,postNum;
     String firstname,lastname,duration,gameName="",startingTime;
-    //HashMap<String, ArrayList<Integer>> console;
-    //HashMap<String, ArrayList<Integer>> screen;
+    // HashMap<String, ArrayList<Integer>> console;
+    // HashMap<String, ArrayList<Integer>> screen;
 
     Client client ;
     Post post;
