@@ -17,6 +17,8 @@ public class Post {
 
         this.available=true;
 
+        this.availableTime="09:00";
+
     }
     public int getPostNumber(){
         return postNumber;

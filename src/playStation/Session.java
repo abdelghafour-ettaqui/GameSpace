@@ -3,6 +3,10 @@ package playStation;
 import java.util.*;
 
 import java.io.*;
+//import org.json.simple.JSONArray;
+//import org.json.simple.JSONObject;
+//import org.json.simple.parser.JSONParser;
+//import org.json.simple.parser.ParseException;
 
 public class Session {
 
@@ -31,10 +35,6 @@ public class Session {
         posts.add(new Post ("DELL","NINTENDO SWITCH",7));
         posts.add(new Post ("ASUS","NINTENDO SWITCH",8));
         posts.add(new Post ("DELL","PS5",9));
-
-
-
-
     }
 
 
@@ -48,7 +48,7 @@ public class Session {
 
         System.out.println("------------------------------------");
             System.out.println(" 1 - Add a client");
-            System.out.println(" 2 - Display consoles and screens");
+            System.out.println(" 2 - Display posts");
             System.out.println(" 3 - Display the gain the day");
             System.out.println(" 4 - Display the gain the month");
         System.out.println("------------------------------------");
@@ -86,6 +86,9 @@ public class Session {
     }
 
     public void clientInfo(){
+        Post onePost;
+        String status;
+
         System.out.println("------------------------------------");
 
         System.out.print(" Client firstname : ");
@@ -93,19 +96,33 @@ public class Session {
 
         System.out.print(" Client lastname : ");
         lastname=scanner.next();
+        System.out.println("----------posts---------------");
+
+        for(int i = 0 ; i < 9 ; i++){
+             onePost=posts.get(i);
+    //             if(i%2==0){
+    //                onePost.setAvailable(false);
+   //             }
+
+            if(onePost.getAvailable())status =" available";
+
+            else status =" not available ,it will be available after "+onePost.getAvailableTime();
+
+            System.out.println( onePost.getPostNumber()+"- "+onePost.getScreen()+" - "+onePost.getConsole()+ " - "+status);
+
+        }
+        System.out.print("enter the number of the chosen post: ");
 
         System.out.print(" Starting time : ");
+
         startingTime=scanner.next();
 
         System.out.print(" Duration : ");
         duration=scanner.next();
 
-        System.out.println("----------Consoles---------------");
-        int indexConsoles=1;
 
-        System.out.print("enter the number of the chosen console: ");
-        choice=scanner.nextInt();
-        consoleChoice(choice);
+       // choice=scanner.nextInt();
+       // consoleChoice(choice);
         System.out.println("-------------Screens-----------------");
         int indexScreens=1;
 
