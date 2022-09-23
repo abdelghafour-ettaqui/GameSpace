@@ -13,8 +13,12 @@ public class Session {
     Client client ;
 
     Post post;
+    int postNumber;
+    String[] periodSplit;
     ArrayList <Client> clients = new ArrayList <Client>();
     ArrayList <Post> posts = new ArrayList <Post>();
+    ArrayList <Object> periodsList = new ArrayList <Object>();
+    ArrayList <String> bookedPeriod = new ArrayList <String>();
 
     public Session() {
         posts.add(new Post("SAMSUNG","PS5",1));
@@ -27,7 +31,7 @@ public class Session {
         posts.add(new Post ("ASUS","NINTENDO SWITCH",8));
         posts.add(new Post ("DELL","PS5",9));
 
-        JsonFile.period();
+        periodsList = JsonFile.period();
 
     }
 
@@ -52,7 +56,7 @@ public class Session {
             serviceChoice(choice);
         }
         catch(Exception e) {
-            System.out.println("invalid input");
+            System.out.println("invalid input 1");
         }
     }
      private void addClient(){
@@ -75,7 +79,8 @@ public class Session {
 
         }
         catch(Exception e) {
-            System.out.println("invalid input");
+            e.printStackTrace();
+//            System.out.println("invalid input 2 ");
         }
     }
 
@@ -100,29 +105,51 @@ public class Session {
 
             if(onePost.getAvailable())status =" available";
 
-            else status =" not available ,it will be available after "+onePost.getAvailableTime();
+            else status =" not available ,it will be available after "+onePost.getNotAvailableTime();
 
             System.out.println( onePost.getPostNumber()+"- "+onePost.getScreen()+" - "+onePost.getConsole()+ " - "+status);
 
         }
         System.out.print("enter the number of the chosen post: ");
-
-        System.out.print(" Starting time : ");
-
-        startingTime=scanner.next();
-
-        System.out.print(" Duration : ");
-        duration=scanner.next();
+        postNumber=scanner.nextInt();
 
 
-       // choice=scanner.nextInt();
-       // consoleChoice(choice);
-        System.out.println("-------------Screens-----------------");
-        int indexScreens=1;
+        System.out.print(" Available duration of the chosen post : ");
+        for (int i=0 ;i<periodsList.size();i++){
+            System.out.println(i+"- "+periodsList.get(i));
+        }
+        System.out.print("Enter periods in this format (0-1-2-3) : ");
 
-        System.out.println("enter the number of the chosen screen: ");
-        choice=scanner.nextInt();
-        screenChoice(choice);
+        duration = scanner.next();
+        periodSplit = duration.split("-");
+        Post chosenPost=posts.get(postNumber-1);
+
+
+        for (int i = 0 ; i<periodSplit.length ; i++) {
+
+           if(chosenPost.getNotAvailableTime().size()==0){
+               chosenPost.setNotAvailableTime(periodSplit[i]);
+           }
+           else {
+               int size = chosenPost.getNotAvailableTime().size();
+           for (int j = 0; j < size; j++) {
+               String s = chosenPost.getNotAvailableTime().get(j);
+               System.out.println(s);
+               System.out.println(periodSplit[i]);
+
+               if(periodSplit[i].equals(s)){
+                       System.out.println("period with number " + s + " is already booked");
+                       return;
+                   }
+                   else{
+                       System.out.println(chosenPost.getNotAvailableTime());
+                       chosenPost.setNotAvailableTime(periodSplit[i]);
+                   }
+               }
+           }
+
+        }
+
 
         System.out.println("------------------- type of the game ----------------");
         System.out.println(" 1 - sport");

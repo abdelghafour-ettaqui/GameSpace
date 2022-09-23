@@ -1,11 +1,14 @@
 package playStation;
 
+import java.util.ArrayList;
+
 public class Post {
     private int postNumber;
     private String console;
     private String screen;
     private boolean available;
-    private String availableTime;
+
+    ArrayList <String> notAvailableTime=new ArrayList <String>() ;
 
     public Post(String screen,String console,int postNumber) {
 
@@ -16,8 +19,6 @@ public class Post {
         this.screen=screen;
 
         this.available=true;
-
-        this.availableTime="09:00";
 
     }
     public int getPostNumber(){
@@ -51,17 +52,18 @@ public class Post {
         this.available = available;
     }
 
-    public String getAvailableTime() {
-        return availableTime;
+    public ArrayList<String> getNotAvailableTime() {
+        return notAvailableTime;
     }
 
-    public void setAvailableTime(String availableTime) {
-        this.availableTime = availableTime;
+    public void setNotAvailableTime(String notAvailableTime)
+    {
+        this.notAvailableTime.add(notAvailableTime);
     }
 
     @Override
     public String toString() {
-        return "console name: " + this.getConsole() + " | screen name: " + this.getScreen() + "it will be available after: "+this.getAvailableTime() ;
+        return "console name: " + this.getConsole() + " | screen name: " + this.getScreen() + "it will be available after: "+this.getNotAvailableTime() ;
     }
 
 

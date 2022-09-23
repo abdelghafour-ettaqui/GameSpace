@@ -29,12 +29,12 @@ public class JsonFile {
             JSONArray periods = (JSONArray) jsonObject.get("periods");
 
             if (periods != null) {
+
                 for (int i=0;i<periods.size();i++){
                     periodsList.add(periods.get(i));
                 }
+
             }
-
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
