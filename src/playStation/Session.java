@@ -2,11 +2,7 @@ package playStation;
 
 import java.util.*;
 
-import java.io.*;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+
 
 
 public class Session {
@@ -14,19 +10,13 @@ public class Session {
     Scanner scanner = new Scanner(System.in);
     int choice,typeChoice,postNum;
     String firstname,lastname,duration,gameName="",startingTime;
-    // HashMap<String, ArrayList<Integer>> console;
-    // HashMap<String, ArrayList<Integer>> screen;
-
     Client client ;
+
     Post post;
-
-
     ArrayList <Client> clients = new ArrayList <Client>();
     ArrayList <Post> posts = new ArrayList <Post>();
 
     public Session() {
-        // = new HashMap<>();
-        // screen = new HashMap<>();
         posts.add(new Post("SAMSUNG","PS5",1));
         posts.add(new Post ("DELL","XBOX",2));
         posts.add(new Post ("SAMSUNG","XBOX",3));
@@ -36,6 +26,9 @@ public class Session {
         posts.add(new Post ("DELL","NINTENDO SWITCH",7));
         posts.add(new Post ("ASUS","NINTENDO SWITCH",8));
         posts.add(new Post ("DELL","PS5",9));
+
+        JsonFile.period();
+
     }
 
 
