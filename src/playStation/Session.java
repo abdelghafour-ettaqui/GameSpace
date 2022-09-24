@@ -22,6 +22,9 @@ public class Session {
 
     String[] postWorksOn;
     ArrayList <GameType> gamesType = new ArrayList<GameType>();
+    ArrayList <String> chosenType ;
+
+
 
     public Session() {
         posts.add(new Post("SAMSUNG","PS5",1));
@@ -33,8 +36,9 @@ public class Session {
         posts.add(new Post ("DELL","NINTENDO SWITCH",7));
         posts.add(new Post ("ASUS","NINTENDO SWITCH",8));
         posts.add(new Post ("DELL","PS5",9));
+
         gamesType.add( new GameType( new String[]{"fifa","PES","TENNIS"},"SPORT",new int[]{1,2,4,9,8} ) );
-        gamesType.add(new GameType( new String[]{"fifa","PES","TENNIS"},"WAR",new int[]{1,2,3,5,6,7} ));
+        gamesType.add(new GameType( new String[]{"WAR1","WAR2","WAR3"},"WAR",new int[]{1,2,3,5,6,7} ));
 
         periodsList = JsonFile.period();
 
@@ -47,8 +51,6 @@ public class Session {
 
 
     public void displayMainMenu() {
-
-
         System.out.println("------------------------------------");
             System.out.println(" 1 - Add a client");
             System.out.println(" 2 - Display posts");
@@ -64,12 +66,23 @@ public class Session {
             System.out.println("invalid input 1");
         }
     }
+    public void serviceChoice(int choice){
+
+        switch (choice){
+            case 1:
+                addClient();
+                break;
+
+
+            default:
+                System.out.println("invalid choice");
+        }
+
+    }
      private void addClient(){
         try {
 
             clientInfo();
-
-
             if(clients.size()<17){
 
                  client = new Client(firstname,lastname, duration , gameName, startingTime, postNum);
@@ -80,33 +93,55 @@ public class Session {
             else{
                 System.out.println("Sorry all the places are reserved");
             }
-
-
         }
         catch(Exception e) {
-            e.printStackTrace();
-//            System.out.println("invalid input 2 ");
+            System.out.println("invalid input 2 ");
         }
     }
 
-    public void clientInfo(){
-        Post onePost;
-        String status;
 
-        System.out.println("------------------------------------");
+    public void clientInfo(){
+
+        getPersonalInfo();
+
+        displayPosts();
+
+        postNumber=scanner.nextInt();
+
+        displayPeriods();
+
+        periodSplit =scanner.next().split("-");
+
+        Post chosenPost = posts.get(postNumber-1);
+
+        storingPeriods( periodSplit,chosenPost);
+
+        displayGameTime(chosenPost);
+
+        typeChoice=scanner.nextInt();
+
+        DisplayGameName();
+
+    }
+
+    public void getPersonalInfo(){
 
         System.out.print(" Client firstname : ");
         firstname=scanner.next();
 
         System.out.print(" Client lastname : ");
         lastname=scanner.next();
+
+    }
+
+
+    public void displayPosts(){
+        Post onePost;
+        String status;
         System.out.println("----------posts---------------");
 
         for(int i = 0 ; i < 9 ; i++){
-             onePost=posts.get(i);
-    //             if(i%2==0){
-    //                onePost.setAvailable(false);
-   //             }
+            onePost=posts.get(i);
 
             if(onePost.getAvailable())status =" available";
 
@@ -116,8 +151,11 @@ public class Session {
 
         }
         System.out.print("enter the number of the chosen post: ");
-        postNumber=scanner.nextInt();
+    }
 
+
+
+    public void displayPeriods(){
 
         System.out.print(" Available duration of the chosen post : ");
         for (int i=0 ;i<periodsList.size();i++){
@@ -125,123 +163,75 @@ public class Session {
         }
         System.out.print("Enter periods in this format (0-1-2-3) : ");
 
-        duration = scanner.next();
-        periodSplit = duration.split("-");
-        Post chosenPost=posts.get(postNumber-1);
-
-
-        for (int i = 0 ; i<periodSplit.length ; i++) {
-
-           if(chosenPost.getNotAvailableTime().size()==0){
-               chosenPost.setNotAvailableTime(periodSplit[i]);
-           }
-           else {
-               int size = chosenPost.getNotAvailableTime().size();
-           for (int j = 0; j < size; j++) {
-               String s = chosenPost.getNotAvailableTime().get(j);
-               System.out.println(s);
-               System.out.println(periodSplit[i]);
-
-               if(periodSplit[i].equals(s)){
-                       System.out.println("period with number " + s + " is already booked");
-                       return;
-                   }
-                   else{
-                       System.out.println(chosenPost.getNotAvailableTime());
-                       chosenPost.setNotAvailableTime(periodSplit[i]);
-                   }
-               }
-           }
-
-        }
-
-
-        System.out.println("------------------- type of the game ----------------");
-        System.out.println(" 1 - sport");
-        System.out.println(" 2 - war");
-        typeChoice=scanner.nextInt();
-        switch (choice){
-            case 1:
-                gameName=sport();
-                break;
-
-            case 2:
-                gameName=war();
-                break;
-        }
-    }
-    public String sport(){
-
-        String gameName="";
-        System.out.println("------------------- game available for sport type ----------------");
-        System.out.println("1 - Fifa");
-        System.out.println("2 - Pes");
-        try{
-            if(scanner.nextInt()==1)gameName="Fifa";
-            else gameName="Pes";
-
-        }
-        catch(Exception e){
-            System.out.println("please enter the correct number");
-        }
-        return gameName;
-    }
-
-
-    public String war(){
-        String gameName="";
-        System.out.println("------------------- game available for war type ----------------");
-        System.out.println("1 - Counter-Strike");
-        System.out.println("2 - Assassin's Creed");
-        try{
-            if(scanner.nextInt()==1)gameName="Counter-Strike";
-            else gameName="Assassin's Creed";
-        }
-        catch(Exception e){
-            System.out.println("please enter the correct number");
-
-        }
-
-        return gameName;
-    }
-
-    public void serviceChoice(int choice){
-
-        switch (choice){
-            case 1:
-                    addClient();
-                    break;
-
-            case 2:
-                   displayDevices();
-                    break;
-
-
-            case 3:
-                // addScreen()();
-                break;
-            case 4:
-                // addScreen()();
-                break;
-            default:
-                System.out.println("invalid choice");
-        }
-
-    }
-    public void consoleChoice(int choice){
-
-    }
-
-    public void screenChoice(int choice){
-
-    }
-
-    public void displayDevices(){
-        int indexConsoles=1;
-        int indexScreens=1;
 
 
     }
+
+
+
+    public void storingPeriods(String[] periodSplit, Post chosenPost){
+        for (String value : periodSplit) {
+
+            if (chosenPost.getNotAvailableTime().size() == 0) {
+                chosenPost.setNotAvailableTime(value);
+            } else {
+                int size = chosenPost.getNotAvailableTime().size();
+                for (int j = 0; j < size; j++) {
+                    String s = chosenPost.getNotAvailableTime().get(j);
+                    System.out.println(s);
+                    System.out.println(value);
+
+                    if (value.equals(s)) {
+                        System.out.println("period with number " + s + " is already booked");
+                        return;
+                    } else {
+
+                        chosenPost.setNotAvailableTime(value);
+                        System.out.println(chosenPost.getNotAvailableTime());
+                        break;
+                    }
+
+                }
+            }
+
+        }
+    }
+
+
+
+    public void displayGameTime(Post chosenPost){
+        System.out.println("------------------- game's Types ----------------");
+
+        chosenType = new ArrayList<String>();
+        int index=0;
+        for (int i=0;i<gamesType.size();i++) {
+
+            for (int j = 0; j < gamesType.get(i).getPosts().length; j++) {
+
+
+                if (gamesType.get(i).getPosts()[j] == chosenPost.getPostNumber()) {
+                    chosenType.add(gamesType.get(i).getType());
+                    System.out.println(++index +"- "+ gamesType.get(i).getType());
+
+                }
+            }
+        }
+
+    }
+
+
+    public void DisplayGameName(){
+        for (GameType gameType : gamesType) {
+            if (gameType.getType().equals(chosenType.get(typeChoice - 1))) {
+                for (String value : gameType.getGameNames()) {
+                    System.out.println(value);
+                }
+
+            }
+
+        }
+    }
+
 
 
 }

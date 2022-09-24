@@ -45,7 +45,10 @@ public class GameType {
     }
 
 
-
+//    @Override
+//    public String toString() {
+//        return "firstname: " + this.firstname() + " | lastname: " + this.lastname();
+//    }
 
 
 
