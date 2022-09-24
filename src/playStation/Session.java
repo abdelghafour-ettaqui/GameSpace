@@ -20,6 +20,9 @@ public class Session {
     ArrayList <Object> periodsList = new ArrayList <Object>();
     ArrayList <String> bookedPeriod = new ArrayList <String>();
 
+    String[] postWorksOn;
+    ArrayList <GameType> gamesType = new ArrayList<GameType>();
+
     public Session() {
         posts.add(new Post("SAMSUNG","PS5",1));
         posts.add(new Post ("DELL","XBOX",2));
@@ -30,6 +33,8 @@ public class Session {
         posts.add(new Post ("DELL","NINTENDO SWITCH",7));
         posts.add(new Post ("ASUS","NINTENDO SWITCH",8));
         posts.add(new Post ("DELL","PS5",9));
+        gamesType.add( new GameType( new String[]{"fifa","PES","TENNIS"},"SPORT",new int[]{1,2,4,9,8} ) );
+        gamesType.add(new GameType( new String[]{"fifa","PES","TENNIS"},"WAR",new int[]{1,2,3,5,6,7} ));
 
         periodsList = JsonFile.period();
 
