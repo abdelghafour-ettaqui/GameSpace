@@ -9,7 +9,7 @@ public class Session {
 
     Scanner scanner = new Scanner(System.in);
     int choice,typeChoice,postNum;
-    String firstname,lastname,duration,gameName="",startingTime;
+    String firstname,lastname,duration,startingTime,gameName;
     Client client ;
 
     Post post;
@@ -23,6 +23,7 @@ public class Session {
     String[] postWorksOn;
     ArrayList <GameType> gamesType = new ArrayList<GameType>();
     ArrayList <String> chosenType ;
+    ArrayList <String> GamesName = new ArrayList <String>();
 
 
 
@@ -85,7 +86,7 @@ public class Session {
             clientInfo();
             if(clients.size()<17){
 
-                 client = new Client(firstname,lastname, duration , gameName, startingTime, postNum);
+                 client = new Client(firstname,lastname, duration , "game", startingTime, postNum);
                  clients.add(client);
                  System.out.println( client.toString() + " size " + clients.size());
 
@@ -121,6 +122,7 @@ public class Session {
         typeChoice=scanner.nextInt();
 
         DisplayGameName();
+
 
     }
 
@@ -162,9 +164,6 @@ public class Session {
             System.out.println(i+"- "+periodsList.get(i));
         }
         System.out.print("Enter periods in this format (0-1-2-3) : ");
-
-
-
     }
 
 
@@ -208,7 +207,6 @@ public class Session {
 
             for (int j = 0; j < gamesType.get(i).getPosts().length; j++) {
 
-
                 if (gamesType.get(i).getPosts()[j] == chosenPost.getPostNumber()) {
                     chosenType.add(gamesType.get(i).getType());
                     System.out.println(++index +"- "+ gamesType.get(i).getType());
@@ -221,15 +219,20 @@ public class Session {
 
 
     public void DisplayGameName(){
+        int index=0;
         for (GameType gameType : gamesType) {
             if (gameType.getType().equals(chosenType.get(typeChoice - 1))) {
                 for (String value : gameType.getGameNames()) {
-                    System.out.println(value);
+                    index++;
+                    GamesName.add(value);
+                    System.out.println(index+"- "+value);
                 }
+                System.out.print("enter the number of the game :");
 
             }
 
         }
+        gameName=GamesName.get(scanner.nextInt()-1);
     }
 
 
