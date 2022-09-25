@@ -5,7 +5,7 @@ public class MainClass {
 
       Session session = new Session();
 
-      session.displayMainMenu();
+      session.DisplayMainMenu();
 
 
     }

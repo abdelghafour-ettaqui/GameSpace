@@ -9,7 +9,8 @@ public class Session {
 
     Scanner scanner = new Scanner(System.in);
     int choice,typeChoice,postNum;
-    String firstname,lastname,duration,startingTime,gameName;
+    double amountPaid;
+    String firstname,lastname,duration,startingTime,gameName,console,screen;
     Client client ;
 
     Post post;
@@ -51,7 +52,7 @@ public class Session {
 
 
 
-    public void displayMainMenu() {
+    public void DisplayMainMenu() {
         System.out.println("------------------------------------");
             System.out.println(" 1 - Add a client");
             System.out.println(" 2 - Display posts");
@@ -61,17 +62,17 @@ public class Session {
         System.out.print("enter your choice");
         try {
             choice = scanner.nextInt();
-            serviceChoice(choice);
+            ServiceChoice(choice);
         }
         catch(Exception e) {
             System.out.println("invalid input 1");
         }
     }
-    public void serviceChoice(int choice){
+    public void ServiceChoice(int choice){
 
         switch (choice){
             case 1:
-                addClient();
+                AddClient();
                 break;
 
 
@@ -80,10 +81,10 @@ public class Session {
         }
 
     }
-     private void addClient(){
+     private void AddClient(){
         try {
 
-            clientInfo();
+            ClientInfo();
             if(clients.size()<17){
 
                  client = new Client(firstname,lastname, duration , "game", startingTime, postNum);
@@ -101,32 +102,34 @@ public class Session {
     }
 
 
-    public void clientInfo(){
+    public void ClientInfo(){
 
-        getPersonalInfo();
+        GetPersonalInfo();
 
-        displayPosts();
+        DisplayPosts();
 
         postNumber=scanner.nextInt();
 
-        displayPeriods();
+        DisplayPeriods();
 
         periodSplit =scanner.next().split("-");
 
         Post chosenPost = posts.get(postNumber-1);
 
-        storingPeriods( periodSplit,chosenPost);
+        StoringPeriods( periodSplit,chosenPost);
 
-        displayGameTime(chosenPost);
+        DisplayGameTime(chosenPost);
 
         typeChoice=scanner.nextInt();
 
         DisplayGameName();
 
+        CalculThePrice(chosenPost);
+
 
     }
 
-    public void getPersonalInfo(){
+    public void GetPersonalInfo(){
 
         System.out.print(" Client firstname : ");
         firstname=scanner.next();
@@ -137,7 +140,7 @@ public class Session {
     }
 
 
-    public void displayPosts(){
+    public void DisplayPosts(){
         Post onePost;
         String status;
         System.out.println("----------posts---------------");
@@ -157,7 +160,7 @@ public class Session {
 
 
 
-    public void displayPeriods(){
+    public void DisplayPeriods(){
 
         System.out.print(" Available duration of the chosen post : ");
         for (int i=0 ;i<periodsList.size();i++){
@@ -168,7 +171,7 @@ public class Session {
 
 
 
-    public void storingPeriods(String[] periodSplit, Post chosenPost){
+    public void StoringPeriods(String[] periodSplit, Post chosenPost){
         for (String value : periodSplit) {
 
             if (chosenPost.getNotAvailableTime().size() == 0) {
@@ -198,7 +201,7 @@ public class Session {
 
 
 
-    public void displayGameTime(Post chosenPost){
+    public void DisplayGameTime(Post chosenPost){
         System.out.println("------------------- game's Types ----------------");
 
         chosenType = new ArrayList<String>();
@@ -233,6 +236,44 @@ public class Session {
 
         }
         gameName=GamesName.get(scanner.nextInt()-1);
+    }
+
+    public void CalculThePrice(Post chosenPost){
+
+        console=chosenPost.getConsole();
+        screen=chosenPost.getScreen();
+        for (String value:periodSplit) {
+            System.out.println(value);
+            if(value.equals("18")){
+                amountPaid=65;
+                break;
+            }
+            else{
+                switch (periodSplit.length) {
+                    case 1 -> amountPaid = 5;
+                    case 2 -> amountPaid = 10;
+                    case 4 -> amountPaid = 18;
+                    case 10 -> amountPaid = 40;
+                    default -> amountPaid = 5 * periodSplit.length;
+                }
+            }
+        }
+
+
+
+        if(clients.size()==0){
+            amountPaid = amountPaid * ( 1 - 0.02 );
+        } else if (gameName.equals("fifa")&&(amountPaid>=10&&amountPaid<65)) {
+            amountPaid = amountPaid * ( 1 - 0.05 );
+
+        } else if (console.equals("PS5")&&screen.equals("SAMSUNG")&&(amountPaid>40&&amountPaid<65)) {
+            amountPaid = amountPaid * ( 1 - 0.10 );
+        }
+        System.out.println("amount paid "+amountPaid);
+        System.out.println("game "+gameName);
+        System.out.println("screen "+chosenPost.getScreen());
+        System.out.println("screen "+chosenPost.getConsole());
+
     }
 
 
