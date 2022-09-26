@@ -5,7 +5,7 @@ import java.util.*;
 public class Session {
 
     Scanner scanner = new Scanner(System.in);
-    int choice, typeChoice, postNum;
+    int choice = 1, typeChoice, postNum;
     double amountPaid;
     public String firstname, lastname, duration, startingTime, gameName, console, screen;
     public Client client;
@@ -43,23 +43,32 @@ public class Session {
 
     }
 
+
     public void DisplayMainMenu() {
         System.out.println("------------------------------------");
         System.out.println(" 1 - Add a client");
         System.out.println(" 2 - Display posts");
         System.out.println(" 3 - Display the gain the day");
         System.out.println(" 4 - Display the gain the month");
+        System.out.println(" 0 - Exit ");
         System.out.println("------------------------------------");
-        System.out.print("enter your choice");
-        try {
-            choice = scanner.nextInt();
-            ServiceChoice(choice);
-        } catch (Exception e) {
-            System.out.println("invalid input 1");
+        System.out.print("enter your choice ");
+        while (choice != 0) {
+
+            try {
+                choice = scanner.nextInt();
+
+                ServiceChoice();
+
+
+            } catch (Exception e) {
+                System.out.println("invalid input 1");
+            }
         }
     }
 
-    public void ServiceChoice(int choice) {
+
+    public void ServiceChoice() {
 
         switch (choice) {
             case 1:
@@ -88,7 +97,8 @@ public class Session {
                 System.out.println("Sorry all the places are reserved");
             }
         } catch (Exception e) {
-            System.out.println("invalid input 2 ");
+            System.out.println("Your input is invalid, please retry to add the client");
+            ClientInfo();
         }
     }
 
@@ -101,11 +111,16 @@ public class Session {
 
         postNumber = scanner.nextInt();
 
-        DisplayPeriods();
+        chosenPost = posts.get(postNumber - 1);
+
+        DisplayPeriods(chosenPost);
 
         periodSplit = scanner.next().split("-");
 
-        chosenPost = posts.get(postNumber - 1);
+        if (!filtredSplit(periodSplit, chosenPost)) {
+            periodSplit= null;
+        }
+        ;
 
         StoringPeriods(periodSplit, chosenPost);
 
@@ -116,6 +131,8 @@ public class Session {
         DisplayGameName();
 
         CalculThePrice(chosenPost);
+
+        BackToMenu();
 
 
     }
@@ -139,28 +156,57 @@ public class Session {
         for (int i = 0; i < 9; i++) {
             onePost = posts.get(i);
 
-            if (onePost.getAvailable()) status = " available";
+//            if (onePost.getAvailable()) status = " available";
+//
+//            else{
+//               int size = onePost.getNotAvailableTime().size();
+//                status = " not available ,it will be available after " + onePost.getNotAvailableTime().get(size-1);
+//            }
 
-            else status = " not available ,it will be available after " + onePost.getNotAvailableTime();
-
-            System.out.println(onePost.getPostNumber() + "- " + onePost.getScreen() + " - " + onePost.getConsole() + " - " + status);
+            System.out.println(onePost.getPostNumber() + "- " + onePost.getScreen() + " - " + onePost.getConsole());
 
         }
         System.out.print("enter the number of the chosen post: ");
     }
 
 
-    public void DisplayPeriods() {
+    public void DisplayPeriods(Post chosenPost) {
 
-        System.out.print(" Available duration of the chosen post : ");
+        System.out.println(" Available duration of the chosen post : ");
         for (int i = 0; i < periodsList.size(); i++) {
-            System.out.println(i + "- " + periodsList.get(i));
+
+
+            if (chosenPost.getNotAvailableTime().size() != 0) {
+                if (!chosenPost.getNotAvailableTime().contains(Integer.toString(i))) {
+                    System.out.println(i + "- " + periodsList.get(i));
+                }
+            } else {
+                System.out.println(i + "- " + periodsList.get(i));
+            }
+
+
         }
         System.out.print("Enter periods in this format (0-1-2-3) : ");
     }
 
+    public boolean filtredSplit(String[] periodSplit, Post chosenPost) {
+        boolean flag = true;
+        for (String value : periodSplit) {
+            if (value.matches("\\d+")) {
+                flag = true;
+            } else {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+
+
+    }
+
 
     public void StoringPeriods(String[] periodSplit, Post chosenPost) {
+
 
         startingTime = periodSplit[0].split("-")[0];
 
@@ -172,16 +218,12 @@ public class Session {
                 int size = chosenPost.getNotAvailableTime().size();
                 for (int j = 0; j < size; j++) {
                     String s = chosenPost.getNotAvailableTime().get(j);
-                    System.out.println(s);
-                    System.out.println(value);
-
                     if (value.equals(s)) {
-                        System.out.println("period with number " + s + " is already booked");
-                        return;
+                        System.out.println("Period with number " + s + " is already booked, please make sure to select from the periods shown above  ");
+                        StoringPeriods(periodSplit, chosenPost);
                     } else {
 
                         chosenPost.setNotAvailableTime(value);
-                        System.out.println(chosenPost.getNotAvailableTime());
                         break;
                     }
 
@@ -239,7 +281,7 @@ public class Session {
         console = chosenPost.getConsole();
         screen = chosenPost.getScreen();
         for (String value : periodSplit) {
-            System.out.println(value);
+//            System.out.println(value);
             if (value.equals("18")) {
                 amountPaid = 65;
                 duration = "whole day";
@@ -283,6 +325,29 @@ public class Session {
         System.out.println("game " + this.gameName);
         System.out.println("screen " + this.chosenPost.getScreen());
         System.out.println("screen " + this.chosenPost.getConsole());
+    }
+
+    public void BackToMenu() {
+        System.out.println("-----------------------------");
+        System.out.println("1 - Add another client ");
+        System.out.println("2 - Back to main menu ");
+        System.out.println("3 - Exit");
+        System.out.print("Enter your choice : ");
+        choice = scanner.nextInt();
+        switch (choice) {
+            case 1 -> {
+                ClientInfo();
+                break;
+            }
+            case 2 -> {
+                DisplayMainMenu();
+                break;
+            }
+            case 3 -> {
+                System.out.println("see you next time ");
+                break;
+            }
+        }
     }
 }
 
