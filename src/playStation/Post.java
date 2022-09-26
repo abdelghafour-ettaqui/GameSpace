@@ -63,7 +63,7 @@ public class Post {
 
     @Override
     public String toString() {
-        return "console name: " + this.getConsole() + " | screen name: " + this.getScreen() + "it will be available after: "+this.getNotAvailableTime() ;
+        return "console name: " + this.getConsole() + " | screen name: " + this.getScreen() + "Post number: "+this.getPostNumber() ;
     }
 
 
