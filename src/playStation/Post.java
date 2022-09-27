@@ -6,11 +6,11 @@ public class Post {
     private int postNumber;
     private String console;
     private String screen;
-    private boolean available;
+    private String available;
 
     ArrayList <String> notAvailableTime=new ArrayList <String>() ;
 
-    public Post(String screen,String console,int postNumber) {
+    public Post(String screen,String console,int postNumber,String available) {
 
         this.postNumber=postNumber;
 
@@ -18,7 +18,7 @@ public class Post {
 
         this.screen=screen;
 
-        this.available=true;
+        this.available=available;
 
     }
     public int getPostNumber(){
@@ -36,7 +36,7 @@ public class Post {
         return screen;
     }
 
-    public boolean getAvailable() {
+    public String getAvailable() {
         return available;
     }
 
@@ -48,7 +48,7 @@ public class Post {
         this.screen = screen;
     }
 
-    public void setAvailable(boolean available) {
+    public void setAvailable(String available) {
         this.available = available;
     }
 
