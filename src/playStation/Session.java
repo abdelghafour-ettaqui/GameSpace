@@ -1,5 +1,6 @@
 package playStation;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -20,6 +21,7 @@ public class Session {
     ArrayList<Post> posts = new ArrayList<Post>();
     ArrayList<Object> periodsList = new ArrayList<Object>();
     ArrayList<String> bookedPeriod = new ArrayList<String>();
+    ArrayList<Gain> gains= new ArrayList<Gain>();
 
     String[] postWorksOn;
     ArrayList<GameType> gamesType = new ArrayList<GameType>();
@@ -75,6 +77,12 @@ public class Session {
             case 1:
                 AddClient();
                 break;
+            case 2:
+                GainOfDay();
+                break;
+            case 3:
+                GainOfMonth();
+                break;
 
 
             default:
@@ -97,17 +105,6 @@ public class Session {
         }
     }
 
-    public void storeClient() {
-        if (clients.size() < 17) {
-            client = new Client(firstname, lastname, duration, gameName, startingTime, chosenPost.getPostNumber(), amountPaid);
-            clients.add(client);
-            System.out.println(client.toString() + " size " + clients.size());
-
-        } else {
-            System.out.println("Sorry all the places are reserved");
-        }
-
-    }
 
     public boolean Reservation_CurrentTime() {
 
@@ -484,7 +481,7 @@ public class Session {
                         }
 
 
-                        periodSplit = new String[]{periodsList.get(i).toString(),"2"};
+                        periodSplit = new String[]{periodsList.get(i).toString(), "2"};
                         chosenPost.setNotAvailableTime(Integer.toString(i));
                     }
 
@@ -509,7 +506,7 @@ public class Session {
                             break;
                         }
 
-                        periodSplit = new String[]{periodsList.get(i).toString(),"2","2"};
+                        periodSplit = new String[]{periodsList.get(i).toString(), "2", "2"};
                         chosenPost.setNotAvailableTime(Integer.toString(i));
                     }
 
@@ -537,7 +534,7 @@ public class Session {
                             AddClient();
                             break;
                         }
-                        periodSplit = new String[]{periodsList.get(i).toString(),"2","2","2"};
+                        periodSplit = new String[]{periodsList.get(i).toString(), "2", "2", "2"};
                         chosenPost.setNotAvailableTime(periodsList.get(i).toString());
 
 
@@ -554,7 +551,7 @@ public class Session {
                 } else {
                     for (int i = 0; i < periodsList.size(); i++) {
                         chosenPost.setNotAvailableTime(periodsList.get(i).toString());
-                        periodSplit =new String[]{periodsList.get(i).toString(),"2","2","2","2"};
+                        periodSplit = new String[]{periodsList.get(i).toString(), "2", "2", "2", "2"};
                     }
                 }
             }
@@ -562,13 +559,46 @@ public class Session {
     }
 
 
+    public void storeClient() {
+
+        clients.add(new Client(firstname, lastname, duration, gameName, startingTime, chosenPost.getPostNumber(), amountPaid));
+        gains.add(new Gain(LocalDate.now(),amountPaid ) );
 
 
+    }
+
+    public void  GainOfMonth(){
+
+        double sum=0;
+        if(gains.size()!=0){
+            for (int i =0 ;i< gains.size();i++){
+               if(gains.get(i).getDate().getMonth().equals(LocalDate.now().getMonth())){
+                   sum+=gains.get(i).getAmountPaid();
+                }
+            }
+        }
+
+        System.out.println("the gain of the month is : "+sum);
+
+    }
+    public void GainOfDay(){
+        double sum=0;
+        boolean firstCon,secondCon;
+        if(gains.size()!=0){
+            for (int i =0 ;i< gains.size();i++){
+                firstCon=gains.get(i).getDate().getDayOfMonth()==LocalDate.now().getDayOfMonth();
+                secondCon=gains.get(i).getDate().getMonth().equals(LocalDate.now().getMonth());
+
+                if(  firstCon && secondCon  ) {
+                    sum+=gains.get(i).getAmountPaid();
+                }
+            }
+        }
 
 
+        System.out.println("the gain of the day is : "+sum);
 
-
-
+    }
 
 
 }
