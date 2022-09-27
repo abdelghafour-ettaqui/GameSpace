@@ -49,7 +49,6 @@ public class Session {
     public void DisplayMainMenu() {
         System.out.println("------------------------------------");
         System.out.println(" 1 - Add a client");
-        System.out.println(" 2 - Display posts");
         System.out.println(" 3 - Display the gain the day");
         System.out.println(" 4 - Display the gain the month");
         System.out.println(" 0 - Exit ");
@@ -92,6 +91,7 @@ public class Session {
 
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Your input is invalid, please retry to add the client");
             ClientInfo();
         }
@@ -151,7 +151,7 @@ public class Session {
             }
             StoringPeriods(periodSplit, chosenPost);
 
-            DisplayGameTime(chosenPost);
+            DisplayGameType(chosenPost);
 
             typeChoice = scanner.nextInt();
 
@@ -160,16 +160,21 @@ public class Session {
             CalculThePrice(chosenPost);
 
             storeClient();
-
-
             BackToMenu();
         } else {
-
+            getDuration();
+            DisplayGameType(chosenPost);
+            typeChoice = scanner.nextInt();
+            DisplayGameName();
+            CalculThePrice(chosenPost);
+            storeClient();
+            BackToMenu();
 
         }
 
 
     }
+
 
     public void GetPersonalInfo() {
 
@@ -183,42 +188,51 @@ public class Session {
 
     public void setPostStatus() {
         int index = 0;
-        String[] period;
-        String time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
 
-        LocalTime firstPartTime, secondPartTime, currentTime;
-
+        int[] values = new int[3];
         for (int i = 0; i < posts.size(); i++) {
 
             for (int j = 0; j < posts.get(i).getNotAvailableTime().size(); j++) {
 
                 index = Integer.parseInt(posts.get(i).getNotAvailableTime().get(j));
 
-                period = periodsList.get(index).toString().split("-");
-
-                firstPartTime = LocalTime.of(Integer.parseInt(period[0].split(":")[0]), Integer.parseInt(period[0].split(":")[1]), 0);
-                secondPartTime = LocalTime.of(Integer.parseInt(period[1].split(":")[0]), Integer.parseInt(period[1].split(":")[1]), 0);
-                currentTime = LocalTime.of(Integer.parseInt(time.split(":")[0]), Integer.parseInt(time.split(":")[1]), 0);
+                values = compareTime(index);
 
 
-                int returnVal1 = currentTime.compareTo(firstPartTime);
-
-                int returnVal2 = secondPartTime.compareTo(currentTime);
-
-                if (returnVal1 > 0 && returnVal2 > 0) {
+                if (values[0] > 0 && values[1] > 0) {
                     posts.get(i).setAvailable("not available");
 
                 }
             }
         }
     }
-    public void  checkIfAvailable(Post chosenPost){
-        if(chosenPost.getAvailable().equals("not available")){
+
+    public int[] compareTime(int index) {
+        String[] period;
+        String time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+        int values[] = new int[3];
+        LocalTime firstPartTime, secondPartTime, currentTime;
+
+        period = periodsList.get(index).toString().split("-");
+
+        firstPartTime = LocalTime.of(Integer.parseInt(period[0].split(":")[0]), Integer.parseInt(period[0].split(":")[1]), 0);
+        secondPartTime = LocalTime.of(Integer.parseInt(period[1].split(":")[0]), Integer.parseInt(period[1].split(":")[1]), 0);
+        currentTime = LocalTime.of(Integer.parseInt(time.split(":")[0]), Integer.parseInt(time.split(":")[1]), 0);
+
+
+        values[0] = currentTime.compareTo(firstPartTime);
+
+        values[1] = secondPartTime.compareTo(currentTime);
+
+        return values;
+    }
+
+    public void checkIfAvailable(Post chosenPost) {
+        if (chosenPost.getAvailable().equals("not available")) {
             System.out.println("the chosen post is not available for the moment please chose another one");
             DisplayPosts();
         }
     }
-
 
     public void DisplayPosts() {
 
@@ -228,13 +242,12 @@ public class Session {
 
         for (int i = 0; i < 9; i++) {
             onePost = posts.get(i);
-            System.out.println(onePost.getPostNumber() + "- " + onePost.getScreen() + " - " + onePost.getConsole() + "- " +onePost.getAvailable() );
+            System.out.println(onePost.getPostNumber() + "- " + onePost.getScreen() + " - " + onePost.getConsole() + "- " + onePost.getAvailable());
 
         }
         System.out.print("enter the number of the chosen post: ");
         postNumber = scanner.nextInt();
     }
-
 
     public void DisplayPeriods(Post chosenPost) {
 
@@ -246,7 +259,6 @@ public class Session {
                 if (!chosenPost.getNotAvailableTime().contains(Integer.toString(i))) {
 
                     System.out.println(i + "- " + periodsList.get(i));
-
                 }
 
             } else {
@@ -254,8 +266,6 @@ public class Session {
                 System.out.println(i + "- " + periodsList.get(i));
 
             }
-
-
         }
         System.out.print("Enter periods in this format (0-1-2-3) : ");
     }
@@ -271,27 +281,7 @@ public class Session {
             }
         }
         return flag;
-
-
     }
-
-//    public void checkWaitingList(String [] periodSplit){
-//        int index=Integer.parseInt(periodSplit[0]);
-//        startingTime=periodsList.get(index).toString().split("-")[0];
-//
-//        System.out.println(startingTime);
-//        System.out.println(clients.size());
-//
-//
-//
-//        for (Client value : clients) {
-//            System.out.println("test-----------------------------------------------" + value.getStartingTime());
-//            if (value.getStartingTime().equals(periodSplit[0].split("-")[0])) {
-//                System.out.println();
-//            }
-//
-//        }
-//    }
 
 
     public void StoringPeriods(String[] periodSplit, Post chosenPost) {
@@ -320,7 +310,7 @@ public class Session {
     }
 
 
-    public void DisplayGameTime(Post chosenPost) {
+    public void DisplayGameType(Post chosenPost) {
 
         System.out.println("------------------- game's Types ----------------");
 
@@ -345,7 +335,6 @@ public class Session {
 
     }
 
-
     public void DisplayGameName() {
         int index = 0;
         for (GameType gameType : gamesType) {
@@ -356,9 +345,7 @@ public class Session {
                     System.out.println(index + "- " + value);
                 }
                 System.out.print("enter the number of the game :");
-
             }
-
         }
         gameName = GamesName.get(scanner.nextInt() - 1);
     }
@@ -399,7 +386,6 @@ public class Session {
             }
         }
 
-
         if (clients.size() == 0) {
             amountPaid = amountPaid * (1 - 0.02);
         } else if (this.gameName.equals("fifa") && (this.amountPaid >= 10 && amountPaid < 65)) {
@@ -409,9 +395,9 @@ public class Session {
             amountPaid = amountPaid * (1 - 0.10);
         }
         System.out.println("amount paid " + this.amountPaid);
-        System.out.println("game " + this.gameName);
-        System.out.println("screen " + this.chosenPost.getScreen());
-        System.out.println("screen " + this.chosenPost.getConsole());
+//        System.out.println("game " + this.gameName);
+//        System.out.println("screen " + this.chosenPost.getScreen());
+//        System.out.println("screen " + this.chosenPost.getConsole());
     }
 
     public void BackToMenu() {
@@ -436,7 +422,157 @@ public class Session {
             }
         }
     }
+
+
+    public void getDuration() {
+        System.out.println("enter duration time: ");
+        System.out.println("1- 30min");
+        System.out.println("2- 1H");
+        System.out.println("3- 2H");
+        System.out.println("4- 5H");
+        System.out.println("5- The whole day");
+        System.out.print("enter your choice : ");
+        int idOfStartingPeriod = 0, durationChoice = scanner.nextInt();
+        System.out.println(durationChoice);
+        String startPeriod = "";
+        int[] values = new int[3];
+
+        for (int i = 0; i < periodsList.size(); i++) {
+            values = compareTime(i);
+            if (values[0] > 0 && values[1] > 0) {
+                startPeriod = periodsList.get(i).toString();
+                idOfStartingPeriod = i;
+                System.out.println(startPeriod);
+                break;
+            }
+        }
+        handlingChoices(idOfStartingPeriod, durationChoice, startPeriod);
+    }
+
+    public void handlingChoices(int idOfStartingPeriod, int durationChoice, String startPeriod) {
+        switch (durationChoice) {
+            case 1 -> {
+
+
+                if (chosenPost.getNotAvailableTime().contains(Integer.toString(idOfStartingPeriod + 1))) {
+                    System.out.println("first");
+                    System.out.println("there are some reservation after the period chosen");
+                    break;
+                } else {
+                    System.out.println("second");
+                    chosenPost.setNotAvailableTime(Integer.toString(idOfStartingPeriod));
+                    chosenPost.setNotAvailableTime(Integer.toString(idOfStartingPeriod + 1));
+                    periodSplit = new String[]{periodsList.get(idOfStartingPeriod + 1).toString()};
+                }
+            }
+            case 2 -> {
+                boolean flag = true;
+                for (int i = idOfStartingPeriod + 1; i < idOfStartingPeriod + 3; i++) {
+                    if (chosenPost.getNotAvailableTime().contains(Integer.toString(i))) {
+                        System.out.println("there are some reservation after the period chosen");
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+
+                    for (int i = idOfStartingPeriod; i <= idOfStartingPeriod + 2; i++) {
+                        if (i > 18) {
+                            System.out.println("we can't provide this duration we will close soon");
+                            AddClient();
+                            break;
+                        }
+
+
+                        periodSplit = new String[]{periodsList.get(i).toString(),"2"};
+                        chosenPost.setNotAvailableTime(Integer.toString(i));
+                    }
+
+
+                }
+            }
+            case 3 -> {
+                boolean flag = true;
+                for (int i = idOfStartingPeriod + 1; i < idOfStartingPeriod + 5; i++) {
+                    if (chosenPost.getNotAvailableTime().contains(Integer.toString(i))) {
+                        System.out.println("there are some reservation after the period chosen");
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+
+                    for (int i = idOfStartingPeriod; i <= idOfStartingPeriod + 4; i++) {
+                        if (i > 18) {
+                            System.out.println("we can't provide this duration we will close soon");
+                            AddClient();
+                            break;
+                        }
+
+                        periodSplit = new String[]{periodsList.get(i).toString(),"2","2"};
+                        chosenPost.setNotAvailableTime(Integer.toString(i));
+                    }
+
+                }
+
+            }
+            case 4 -> {
+                boolean flag = true;
+
+                for (int i = idOfStartingPeriod + 1; i < idOfStartingPeriod + 11; i++) {
+                    if (chosenPost.getNotAvailableTime().contains(Integer.toString(i))) {
+                        System.out.println("there are some reservation after the period chosen");
+                        flag = false;
+                        break;
+                    }
+
+                }
+                if (flag) {
+
+                    System.out.println("hello dear");
+
+                    for (int i = idOfStartingPeriod; i <= idOfStartingPeriod + 9; i++) {
+                        if (i > 18) {
+                            System.out.println("we can't provide this duration we will close soon");
+                            AddClient();
+                            break;
+                        }
+                        periodSplit = new String[]{periodsList.get(i).toString(),"2","2","2"};
+                        chosenPost.setNotAvailableTime(periodsList.get(i).toString());
+
+
+                    }
+
+                }
+
+
+            }
+            case 5 -> {
+                if (chosenPost.getNotAvailableTime().size() != 0) {
+                    System.out.println("there are other reservations on this post, you can't reserve this post for the whole day");
+                    break;
+                } else {
+                    for (int i = 0; i < periodsList.size(); i++) {
+                        chosenPost.setNotAvailableTime(periodsList.get(i).toString());
+                        periodSplit =new String[]{periodsList.get(i).toString(),"2","2","2","2"};
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
+
 
 
 
